@@ -1,0 +1,29 @@
+create table personal (empno number(9),bloodgrp varchar(10),
+height number(10),weight number(10),
+mobilenum number(15),CONSTRAINT FK_empno FOREIGN KEY (empno) REFERENCES employee(empno));
+
+Insert into employee values(1003,'premnath','asst.associate',17000,1700,'IT','19-apr-1995',56);
+
+select age from employee where age>46;
+
+select salary from employee where salary between 10000 and 60000;
+
+update employee set sal = 8000 where name='kamal';
+
+
+select constraint_name,constraint_type from user_constraints where table_name='PERSONAL';
+
+Insert into personal values(1001,'A1+ve',159,64,9773464376);
+
+
+select employee.name,employee.age INNER JOIN personal on employee.empno=personal.empno;
+
+select o.empno,o.age,i.bloodgrp from employee where bloodgrp='A1+ve'  inner join personal i on o.empno=i.empno; where bloogrp='A1+ve'; 
+
+select max(height) from personal;
+
+
+SELECT   
+FROM personal  
+LEFT [OUTER] JOIN table2  
+ON table1.column = table2.column;   
