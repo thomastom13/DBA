@@ -1,0 +1,26 @@
+create user test35 identified by tom13;
+
+grant create session to test35;
+
+GRANT RESOURCE TO TEST35;
+
+
+
+
+login with credentials in aother window:
+select * from user_users;
+
+grant create view to test35;
+
+in test35:
+create view testview as select * from cat35.EMPLOYEE;
+
+grant all on employee to test35;
+
+select * from TESTVIEW;
+
+revoke delete on employee from test35;
+
+select * from cat35.employee;
+
+insert into cat35.employee values(1001,'raj','clerk',20000,2000,'IT','02-mar-2002',45);

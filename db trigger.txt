@@ -1,0 +1,24 @@
+create table emp_trig as select * from employee where 1=2;
+
+--ALTER TABLE emp_trig ADD (old_dob date,new_date date, user_name varchar2(20),cur_date date);
+
+alter table emp_trig add(new_dob date,user_id varchar(10),curdate date);
+
+
+create or replace trigger trig_dob after update on employee for each row
+begin
+insert into emp_trig values(:old.empno,:old.name,:old.job,:old.sal,:old.commission,
+:old.department,:old.dob,:old.age,:new.dob,user,sysdate);
+end;
+
+update employee set dob='01-APR-2003' where empno=1001;
+
+select * from user_errors where type = 'TRIGGER' and name = 'trig_dob'
+
+
+ALTER TRIGGER trig_dob DISABLE;
+
+ALTER TRIGGER trig_dob ENABLE;
+
+
+drop trigger trig_dob;

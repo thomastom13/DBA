@@ -1,0 +1,42 @@
+Function
+create function fn_add(first Number,second Number) return Number is
+Begin
+return(first+second);
+end;
+
+Procedure
+
+
+create procedure proce (d NUMBER)
+IS
+word varchar(20);
+BEGIN
+select decode(d,1,'ONE',2,'Two','Not an number') into word from dual;
+DBMS_OUTPUT.PUT_LINE(word);
+end;
+
+//Creation or declaration of package
+
+create Package pack1 is
+function fn_add(first Number,second Number) return Number;
+procedure proce (d NUMBER);
+end;
+
+//Decalration of package body
+
+create package body pack1 is
+function fn_add(first Number,second Number) return Number is
+Begin
+return(first+second);
+end;
+
+procedure proce (d NUMBER)
+IS
+word varchar(20);
+BEGIN
+select decode(d,1,'ONE',2,'Two','Not an number') into word from dual;
+DBMS_OUTPUT.PUT_LINE(word);
+end;
+
+end;
+
