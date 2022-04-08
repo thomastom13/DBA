@@ -1,0 +1,65 @@
+CIA:
+create table employee(id number,name varchar(20),gender varchar(20),age number,dob date, CONSTRAINT empid_pk PRIMARY KEY(id));
+
+Insert into employee values(1,'Ram','M',32,'09-APR-2002');
+
+USER Creation:
+ 
+Create user test1 identified by test123;
+
+Grant create session to test1;
+
+grant create view to test1;
+
+grant resources to test1; -> it has around 9 privileges default.
+
+Roles:
+create role emp_ro;
+
+grant select,insert,update on employee  to emp_ro;
+
+grant emp_ro to test1;
+
+TO check the role created:
+select * from session_roles
+select * from user_tab_privs; -> shows the privilege of each role
+
+
+VIEWS:
+ 
+To create view:
+ create view emp_vw as select id,name,dob from employee;
+insert into emp_vw values(3,'raj','12-JUL-2001');
+
+The above insert values will also inserted in the employee table with some columns alone.
+
+Read only view
+>create or replace view emp_rvw as select id,name,dob from employee with read only;
+when insert it shows virtual table not allowed here -error(ora-01733)
+
+with check option:
+create or replace view emp_rvw as select id,name,dob from employee with check option;
+
+
+
+
+
+
+
+
+
+
+
+
+
+TO know commands:
+
+To verify an user is created successfully:
+select username,profile,default_tablespace,authentication_type from dba_users where account_status='OPEN'; ->works only in dba user(system user)
+
+to check the privileage on users:
+select * from user_tab_privs where username='test1';
+
+privilege to select 
+grant select any table to test1;
+

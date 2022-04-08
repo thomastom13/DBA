@@ -1,0 +1,132 @@
+1.
+create table empl (empno number,name varchar(20),job varchar(20),sal number,commission number,department varchar(20), Constraint empno_pk PRIMARY KEY(empno));
+
+Insert into empl values(4,'kal','manager',20000,3000,'IT');
+
+alter table empl add constraint ck_sal CHECK (sal>0 and sal>commission);
+to view constrint-check pau
+2.Views
+
+i)create view work_v as select * from empl where job !='manager';
+ii)Insert into work_v values(4,'bolt','trainee',15000,1500,'IT');
+
+Alter table empl add  dob date;
+update empl set dob='20-feb-2002'  where empno=4;
+
+iii)Alter table empl add age number(3);
+To add age:
+iv)Update empl set age=round((sysdate-dob)/365);
+
+
+INDEX:
+create index idx_empl on empl(name);
+
+create index idx_fun_empl on empl(upper(name),age);
+select index_name from user_indexes;
+
+referesh index:
+alter index idx_fun_empl rebuild;
+
+
+7_Solving Queries:
+
+create table personel(empno number,bld_grp varchar(6),height number(3),weight number(5),mob_no number(12));
+
+Alter table personel add constraint empn_per_fk FOREIGN KEY (empno) REFERENCES empl(empno);
+
+insert into personel values(4,'a1+ve',157,56,94354456748);
+
+select name from empl where age>40;
+
+select name from empl where sal between 10000 and 60000;
+or 
+select name from empl where sal >10000 and sal<60000;
+
+select  empl.name name,empl.age age from empl inner join personel on empl.empno=personel.empno where  personel.bld_grp='a1+ve';
+
+select max(height) from personel;
+
+to know for getting 2 largest number
+select max(height) from personel where height not in (select max(height) from personel);
+
+SEQUENCE:
+create sequence seq_emp start with 1 minvalue 1 maxvalue 10000 nocycle;
+
+Insert into empl values(seq_emp.nextval,'kumar','associate',15000,2000,'IT','20-MAR-2002',25);
+
+8.Procedure:
+create or replace procedure pro_emp (name varchar,job varchar,sal number,commission number,department varchar,dob date,age number) is
+BEGIN
+insert into empl values(seq_emp.nextval,name,job,sal,commission,department,dob,age);
+end;
+/
+
+exec pro_emp ('latha','manager',30000,3000,'IT','10-feb-2003',30);
+
+9.Procedure decode
+
+
+
+create or replace procedure pro_dec (n number) is 
+word varchar(10);
+BEGIN
+
+select decode(n,1,'One',2,'TWO','Not an number') into word from dual;
+dbms_output.put_line(word);
+end;
+/ 
+
+10.package
+package definition
+to know:(Do not include begin when declaring the package)
+
+create or replace package pack1 is
+function fn_add(a number,b number)return number;
+procedure pr_yr(dob date);
+end;
+/
+
+Declaring package Body:
+create or replace package body pack1 is
+
+function fn_add(a number,b number) return number is
+BEGIN
+return (a+b);
+end;
+
+procedure pr_yr(dob date) is
+begin
+dbms_output.put_line(round((sysdate-dob)/365));
+end;
+
+end;
+/
+
+11.Trigger
+
+create table empl_log as select * from empl where 1=2;
+
+alter table empl_log add (new_dob date,user_id varchar(10),curdate date);
+
+create or replace trigger trig_dob after update on empl for each row
+BEGIN
+Insert into empl_log values(:old.empno,:old.name,:old.job,:old.sal,:old.commission,:old.department,:old.dob,:old.age,:new.dob,user,sysdate);
+end;
+/
+update empl set dob='16-mar-2002' where name ='lal';
+
+3.PARTITION
+
+create table sal_part(emp_id number primary key,name varchar(10),sal number) partition by range (sal) (partition p1 values less than (5000),partition p2 values less than (10000));
+
+insert into sal_part values(2,'lal',4000);
+
+select * from sal_part partition (p1);
+
+TO KNOW:to check the partition is created
+select table_name,partition_name from user_tab_partitions where table_name='SAL_PART';
+
+SYNONYMS:
+same table with different name
+create synonym syn_emp for employee;
+
